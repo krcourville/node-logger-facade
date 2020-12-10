@@ -4,6 +4,7 @@ import { Format } from "logform";
 import { LogEntry, LogWriter, LoggerFactory, LogLevel } from "../Logger";
 import { LoggerMixin } from "../LoggerMixin";
 import { staticMetaFormatter } from "./static-meta-formatter";
+import { scopedMetaFormatter } from "./scoped-meta-formatter";
 
 const { combine, json } = format;
 
@@ -29,7 +30,12 @@ const formatError = format((entry) => {
   return entry;
 });
 
-export const defaultFormatters = [staticMetaFormatter(), formatError(), json()];
+export const defaultFormatters = [
+  staticMetaFormatter(),
+  scopedMetaFormatter(),
+  formatError(),
+  json(),
+];
 
 class WinstonLogWriter implements LogWriter {
   private logger: Logger;
