@@ -1,13 +1,14 @@
 import { LoggerFacade, LogLevel, WinstonLoggerFactory } from "./logging";
 
-import * as ErrorFormats from "./error-formatters";
+import { myErrorFormatter } from "./error-formatters";
 import { MyError } from "./errors/MyError";
 
 process.env.LOG_LEVEL = LogLevel.DEBUG;
 
 LoggerFacade.configure({
   factory: new WinstonLoggerFactory({
-    formats: (formats) => [ErrorFormats.myError(), ...formats],
+    // prepends myErrorFormatter before other formats
+    formats: (formats) => [myErrorFormatter(), ...formats],
   }),
 });
 
