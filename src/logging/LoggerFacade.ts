@@ -7,6 +7,8 @@ export interface LoggerFacadeConfig {
 export class LoggerFacade {
   private static config: LoggerFacadeConfig;
 
+  private static meta = {};
+
   static configure(config: LoggerFacadeConfig) {
     LoggerFacade.config = config;
   }

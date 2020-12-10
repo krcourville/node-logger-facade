@@ -1,5 +1,5 @@
-import { LogEntry, LogWriter, LoggerFactory } from "./Logger";
-import { LoggerMixin } from "./LoggerMixin";
+import { LogEntry, LogWriter, LoggerFactory } from "../Logger";
+import { LoggerMixin } from "../LoggerMixin";
 
 class ConsoleLogWriter implements LogWriter {
   constructor(private name: string) {}

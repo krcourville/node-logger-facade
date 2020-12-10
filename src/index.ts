@@ -1,11 +1,13 @@
-import { LoggerFacade } from "./logging";
+import { LoggerFacade, appendMeta } from "./logging";
 
 import { MyError } from "./errors/MyError";
 import "./configure-logging";
 
 const logger = LoggerFacade.getLogger("root");
 
-export function handler() {
+export function handler(requestId: string) {
+  appendMeta({ requestId });
+
   logger.debug("Starting handler()");
   logger.info("Strictly informational", {
     meta1: true,

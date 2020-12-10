@@ -1,8 +1,9 @@
 import { format, transports, createLogger, Logger } from "winston";
 import { Format } from "logform";
 
-import { LogEntry, LogWriter, LoggerFactory, LogLevel } from "./Logger";
-import { LoggerMixin } from "./LoggerMixin";
+import { LogEntry, LogWriter, LoggerFactory, LogLevel } from "../Logger";
+import { LoggerMixin } from "../LoggerMixin";
+import { staticMetaFormatter } from "./static-meta-formatter";
 
 const { combine, json } = format;
 
@@ -28,7 +29,7 @@ const formatError = format((entry) => {
   return entry;
 });
 
-export const defaultFormatters = [formatError(), json()];
+export const defaultFormatters = [staticMetaFormatter(), formatError(), json()];
 
 class WinstonLogWriter implements LogWriter {
   private logger: Logger;
