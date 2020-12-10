@@ -16,7 +16,9 @@ export interface LogWriter {
 }
 
 export interface Logger extends LogWriter {
+  debug(message: string, meta?: object): void;
   info(message: string, meta?: object): void;
+  warning(message: string, meta?: object): void;
   error(message: string, meta?: object): void;
   error(error: Error, message: string, meta?: object): void;
 }
@@ -26,9 +28,3 @@ export interface LoggerFactory {
 }
 
 export interface LoggerFactory {}
-
-const o: LogEntry = {
-  level: LogLevel.DEBUG,
-  message: "test",
-  blah: true,
-};

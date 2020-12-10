@@ -6,11 +6,27 @@ type LoggerMixinable = GConstructor<LogWriter>;
 
 export function LoggerMixin<TBase extends LoggerMixinable>(Base: TBase) {
   return class LoggerMixin extends Base {
+    debug(message: string, meta: object = {}) {
+      this.log({
+        level: LogLevel.DEBUG,
+        message,
+        meta,
+      });
+    }
+
     info(message: string, meta: object = {}) {
       this.log({
         level: LogLevel.INFO,
         message,
-        ...meta,
+        meta,
+      });
+    }
+
+    warning(message: string, meta: object = {}) {
+      this.log({
+        level: LogLevel.WARNING,
+        message,
+        meta,
       });
     }
 
@@ -22,13 +38,13 @@ export function LoggerMixin<TBase extends LoggerMixinable>(Base: TBase) {
           level: LogLevel.ERROR,
           message: arg2 as string,
           error: arg1,
-          ...arg3,
+          meta: arg3,
         });
       } else {
         this.log({
           level: LogLevel.ERROR,
           message: arg1,
-          ...(arg2 as object),
+          meta: arg2 as object,
         });
       }
     }

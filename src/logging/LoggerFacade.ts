@@ -11,12 +11,12 @@ export class LoggerFacade {
     LoggerFacade.config = config;
   }
 
-  static get(name: string): Logger {
+  static getLogger(name: string): Logger {
     if (!LoggerFacade.config) {
       throw new Error(`LoggerFacade must be configured first`);
     }
     return LoggerFacade.config.factory.get(name);
   }
 
-  private constructor(name: string) {}
+  private constructor() {}
 }
