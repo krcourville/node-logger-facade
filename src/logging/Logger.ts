@@ -26,5 +26,3 @@ export interface Logger extends LogWriter {
 export interface LoggerFactory {
   get(name: string): Logger;
 }
-
-export interface LoggerFactory {}
