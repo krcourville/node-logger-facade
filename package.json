@@ -1,0 +1,22 @@
+{
+  "name": "logger-facade",
+  "version": "1.0.0",
+  "description": "Experimenting with a Logger Facade, based on C# implementation",
+  "main": "index.js",
+  "scripts": {
+    "build-ts": "tsc",
+    "test": "npm run build-ts && node ./test",
+    "watch-build-ts": "tsc -w",
+    "watch-test": "nodemon test.js --watch dist",
+    "start": "concurrently npm:watch-*"
+  },
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "typescript": "^4.1.2"
+  },
+  "devDependencies": {
+    "concurrently": "^5.3.0",
+    "nodemon": "^2.0.6"
+  }
+}
