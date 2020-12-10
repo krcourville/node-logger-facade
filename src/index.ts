@@ -1,16 +1,7 @@
-import { LoggerFacade, LogLevel, WinstonLoggerFactory } from "./logging";
+import { LoggerFacade } from "./logging";
 
-import { myErrorFormatter } from "./error-formatters";
 import { MyError } from "./errors/MyError";
-
-process.env.LOG_LEVEL = LogLevel.DEBUG;
-
-LoggerFacade.configure({
-  factory: new WinstonLoggerFactory({
-    // prepends myErrorFormatter before other formats
-    formats: (formats) => [myErrorFormatter(), ...formats],
-  }),
-});
+import "./configure-logging";
 
 const logger = LoggerFacade.getLogger("root");
 
