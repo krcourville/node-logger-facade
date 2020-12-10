@@ -1,7 +1,14 @@
-import { LoggerFacade, WinstonLoggerFactory } from "./logging";
+import { LoggerFacade, LogLevel, WinstonLoggerFactory } from "./logging";
+
+import * as ErrorFormats from "./error-formatters";
+import { MyError } from "./errors/MyError";
+
+process.env.LOG_LEVEL = LogLevel.DEBUG;
 
 LoggerFacade.configure({
-  factory: new WinstonLoggerFactory(),
+  factory: new WinstonLoggerFactory({
+    formats: (formats) => [ErrorFormats.myError(), ...formats],
+  }),
 });
 
 const logger = LoggerFacade.getLogger("root");
@@ -13,4 +20,5 @@ export function handler() {
   });
   logger.warning("This is a warning");
   logger.error(new Error("basic error"), "it broke");
+  logger.error(new MyError("my error", true), "it broke again");
 }

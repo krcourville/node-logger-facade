@@ -1,4 +1,5 @@
 import { format, transports, createLogger, Logger } from "winston";
+import { Format } from "logform";
 
 import { LogEntry, LogWriter, LoggerFactory, LogLevel } from "./Logger";
 import { LoggerMixin } from "./LoggerMixin";
@@ -16,8 +17,8 @@ const levelMap = new Map<LogLevel, string>([
  * Basic error formatter
  */
 const formatError = format((entry) => {
-  const error = entry?.error as Error;
-  if (error) {
+  const error = entry?.error;
+  if (error instanceof Error) {
     entry.error = {
       message: error.message,
       stack: error.stack,
@@ -27,15 +28,22 @@ const formatError = format((entry) => {
   return entry;
 });
 
+export const defaultFormatters = [formatError(), json()];
+
 class WinstonLogWriter implements LogWriter {
   private logger: Logger;
-  constructor(private name: string) {
+  constructor(private name: string, options?: WinstonLoggerFactoryOptions) {
+    const level = process.env?.LOG_LEVEL?.toLowerCase() || "info";
+    let formats = defaultFormatters.slice();
+    if (options?.formats) {
+      formats = options.formats(formats);
+    }
     this.logger = createLogger({
-      format: combine(formatError(), json()),
+      format: combine(...formats),
       defaultMeta: {
         name,
       },
-      transports: [new transports.Console({ stderrLevels: ["error"] })],
+      transports: [new transports.Console({ level, stderrLevels: ["error"] })],
     });
   }
 
@@ -51,8 +59,17 @@ class WinstonLogWriter implements LogWriter {
 
 const WinstonLogger = LoggerMixin(WinstonLogWriter);
 
+export interface WinstonLoggerFactoryOptions {
+  /**
+   * If specified, modify the default formats.
+   */
+  formats?: (formats: Format[]) => Format[];
+}
+
 export class WinstonLoggerFactory implements LoggerFactory {
+  constructor(private options?: WinstonLoggerFactoryOptions) {}
+
   get(name: string) {
-    return new WinstonLogger(name);
+    return new WinstonLogger(name, this.options);
   }
 }

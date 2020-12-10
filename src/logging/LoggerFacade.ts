@@ -1,4 +1,4 @@
-import { Logger, LoggerFactory } from "./Logger";
+import { Logger, LoggerFactory, LogLevel } from "./Logger";
 
 export interface LoggerFacadeConfig {
   factory: LoggerFactory;
@@ -16,6 +16,10 @@ export class LoggerFacade {
       throw new Error(`LoggerFacade must be configured first`);
     }
     return LoggerFacade.config.factory.get(name);
+  }
+
+  static getLogLevel(): LogLevel {
+    return process.env.LOG_LEVEL as LogLevel;
   }
 
   private constructor() {}
